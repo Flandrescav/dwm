@@ -112,6 +112,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_F12,      quit,           {0} },
 
     { MODKEY,                       XK_F5,       spawn,        SHCMD("/opt/clash/cfw") },
+    { MODKEY|ShiftMask,             XK_q,        spawn,        SHCMD("/opt/apps/com.qq.tim.spark/files/run.sh") },
+    { MODKEY,                       XK_F2,       spawn,        SHCMD("~/.dwm/scripts/voldown.sh") },
+    { MODKEY,                       XK_F3,       spawn,        SHCMD("~/.dwm/scripts/volup.sh") },
 };
 
 /* button definitions */
