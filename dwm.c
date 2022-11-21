@@ -198,6 +198,7 @@ static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
+static void pointerfocuswin(Client *c);
 static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
@@ -1002,6 +1003,16 @@ focusstack(const Arg *arg)
 	}
 }
 
+void
+pointerfocuswin(Client *c)
+{
+    if (c) {
+        XWarpPointer(dpy, None, root, 0, 0, 0, 0, c->x + c->w / 2, c->y + c->h / 2);
+        focus(c);
+    } else
+        XWarpPointer(dpy, None, root, 0, 0, 0, 0, selmon->wx + selmon->ww / 3, selmon->wy + selmon->wh / 2);
+}
+
 Atom
 getatomprop(Client *c, Atom prop)
 {
@@ -1175,6 +1186,34 @@ killclient(const Arg *arg)
 		XUngrabServer(dpy);
 	}
 }
+
+void
+managefloating(Client *c)
+{
+    Client *tc;
+    int d1 = 0, d2 = 0, tx, ty;
+    int tryed = 0;
+    while (tryed++ < 10) {
+        int dw, dh, existed = 0;
+        dw = (selmon->ww / 20) * d1, dh = (selmon->wh / 20) * d2;
+        tx = c->x + dw, ty = c->y + dh;
+        for (tc = selmon->clients; tc; tc = tc->next) {
+            if (ISVISIBLE(tc) && tc != c && tc->x == tx && tc->y == ty) {
+                existed = 1;
+                break;
+            }
+        }
+        if (!existed) {
+            c->x = tx;
+            c->y = ty;
+            break;
+        } else {
+            while (d1 == 0) d1 = rand()%7 - 3;
+            while (d2 == 0) d2 = rand()%7 - 3;
+        }
+    }
+}
+
 
 void
 manage(Window w, XWindowAttributes *wa)
@@ -2027,16 +2066,23 @@ togglebar(const Arg *arg)
 void
 togglefloating(const Arg *arg)
 {
-	if (!selmon->sel)
-		return;
-	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
-		return;
-	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
-	if (selmon->sel->isfloating)
-		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
-			selmon->sel->w, selmon->sel->h, 0);
-	arrange(selmon);
+    if (!selmon->sel)
+        return;
+    if (selmon->sel->isfullscreen)
+        return;
+    selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
+
+    if (selmon->sel->isfloating) {
+        selmon->sel->x = selmon->wx + selmon->ww / 6,
+        selmon->sel->y = selmon->wy + selmon->wh / 6,
+        managefloating(selmon->sel);
+        resize(selmon->sel, selmon->sel->x, selmon->sel->y, selmon->ww / 3 * 2, selmon->wh / 3 * 2, 0);
+    }
+
+    arrange(selmon);
+    pointerfocuswin(selmon->sel);
 }
+
 
 void
 toggletag(const Arg *arg)
