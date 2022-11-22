@@ -77,13 +77,18 @@ static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+    
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+
+	{ MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = -1 } },
+
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
@@ -91,8 +96,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,      togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
@@ -101,6 +108,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
+
+	{ MODKEY|ShiftMask,             XK_F12,    quit,           {0} },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -111,13 +120,13 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_F12,      quit,           {0} },
 
-    { MODKEY,                       XK_F5,       spawn,        SHCMD("/opt/clash/cfw") },
+
     { MODKEY,                       XK_g,        spawn,        SHCMD("floatst") },
-    { MODKEY|ShiftMask,             XK_q,        spawn,        SHCMD("/opt/apps/com.qq.tim.spark/files/run.sh") },
-    { MODKEY,                       XK_F2,       spawn,        SHCMD("~/.dwm/scripts/voldown.sh") },
+    { MODKEY,                       XK_F5,       spawn,        SHCMD("/opt/clash/cfw") },
     { MODKEY,                       XK_F3,       spawn,        SHCMD("~/.dwm/scripts/volup.sh") },
+    { MODKEY,                       XK_F2,       spawn,        SHCMD("~/.dwm/scripts/voldown.sh") },
+    { MODKEY|ShiftMask,             XK_q,        spawn,        SHCMD("/opt/apps/com.qq.tim.spark/files/run.sh") },
 };
 
 /* button definitions */
