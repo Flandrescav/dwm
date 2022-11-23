@@ -122,6 +122,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 
 
+    { MODKEY,                       XK_l,        spawn,        SHCMD("i3lockblur") },
     { MODKEY,                       XK_g,        spawn,        SHCMD("floatst") },
     { MODKEY,                       XK_F5,       spawn,        SHCMD("/opt/clash/cfw") },
     { MODKEY,                       XK_F3,       spawn,        SHCMD("~/.dwm/scripts/volup.sh") },
